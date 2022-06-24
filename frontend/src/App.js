@@ -8,6 +8,7 @@ import axios from "axios";
 function App() {
   const [location, setLocation] = useState("");
   const [data, setData] = useState("");
+  const [cel, setCel] = useState(false);
   async function postName(e) {
     e.preventDefault();
 
@@ -18,12 +19,15 @@ function App() {
       let currWeather = await axios.post("http://54.163.205.146:4000/city", {
         location,
       });
-
       console.log(currWeather.data);
       setData(currWeather.data);
     } catch (error) {
       console.log(error);
     }
+  }
+  async function showInCel() {
+    console.log("asdasdasdas");
+    setCel(true);
   }
   return (
     <div>
@@ -48,15 +52,11 @@ function App() {
               placeholder="Enter Location"
               onChange={(event) => setLocation(event.target.value)}
             />
-            <button type="submit" class="button-29" role="button">
+            <button type="submit" class="button">
               Search
             </button>
 
-            <button
-              class="button-29"
-              role="button"
-              onClick={() => setLocation(() => "")}
-            >
+            <button class="button" onClick={() => setLocation(() => "")}>
               Clear
             </button>
           </div>
@@ -69,7 +69,8 @@ function App() {
               <p>{data.name}</p>
             </div>
             <div className="temp">
-              {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
+              {!data.main && location !== "" ? data.main : ""}
+              {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : ""}
 
               {data.weather ? (
                 <p style={{ fontSize: "3em" }}>{data.weather[0].main}</p>
@@ -80,16 +81,6 @@ function App() {
           {data.name !== undefined && (
             <div className="bottom">
               <div
-                className="feels"
-                style={{ borderRight: "2px solid white", padding: "10px" }}
-              >
-                {data.main ? (
-                  <p className="bold">{data.main.feels_like.toFixed()}°F</p>
-                ) : null}
-                <p>Feels Like </p>
-              </div>
-
-              <div
                 className="humidity"
                 style={{ borderRight: "2px solid white", padding: "10px" }}
               >
@@ -97,6 +88,30 @@ function App() {
                   <p className="bold">{data.main.humidity}%</p>
                 ) : null}
                 <p>Humidity</p>
+              </div>
+              <div
+                className="feels"
+                style={{ borderRight: "2px solid white", padding: "10px" }}
+              >
+                {data.main ? (
+                  <>
+                    <button onClick={() => showInCel(() => "")}>
+                      View in Celcius
+                    </button>
+                    {cel ? (
+                      <p className="bold">
+                        {(
+                          (parseInt(data.main.temp.toFixed()) - 32) *
+                          (5 / 9)
+                        ).toFixed(2)}
+                        °C
+                      </p>
+                    ) : (
+                      <p className="bold">{data.main.feels_like.toFixed()}°F</p>
+                    )}
+                  </>
+                ) : null}
+                <p>Feels Like </p>
               </div>
               <div className="wind" style={{ padding: "10px" }}>
                 {data.wind ? (
