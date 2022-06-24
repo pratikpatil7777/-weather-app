@@ -45,6 +45,7 @@ app.post("/city", cors(), async (req, res) => {
         if (response.statusCode === 200) {
           res.send(data);
         } else {
+          //   res.send("No data found");
           console.log(response.statusCode);
         }
       } catch (e) {
