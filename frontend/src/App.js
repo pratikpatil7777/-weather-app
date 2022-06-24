@@ -45,7 +45,7 @@ function App() {
               type="text"
               style={{ boxShadow: "0px 2px 12px 10px rgba(0, 0, 0, 0.14)" }}
               value={location}
-              placeholder="Enter City Name here..."
+              placeholder="Enter Location"
               onChange={(event) => setLocation(event.target.value)}
             />
             <button type="submit" class="button-29" role="button">
