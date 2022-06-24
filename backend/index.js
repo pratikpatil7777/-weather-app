@@ -2,9 +2,15 @@ const express = require("express");
 const request = require("request");
 const app = express();
 const cors = require("cors");
+var options = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(cors(options));
 app.get("/", cors(), async (req, res) => {
   let city = req.query.city;
   var request = require("request");
