@@ -15,7 +15,7 @@ function App() {
       if (location === "") {
         return;
       }
-      let currWeather = await axios.post("http://localhost:4000/city", {
+      let currWeather = await axios.post("http://54.163.205.146:4000/city", {
         location,
       });
 
