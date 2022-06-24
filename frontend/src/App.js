@@ -8,7 +8,11 @@ import axios from "axios";
 function App() {
   const [location, setLocation] = useState("");
   const [data, setData] = useState("");
-  const [cel, setCel] = useState(false);
+  // const [cel, setCel] = useState(false);
+  // const [far, setFar] = useState(false);
+  const [unit, setUnit] = React.useState("C");
+
+  const myUnit = unit === "C" ? "F" : "C";
   async function postName(e) {
     e.preventDefault();
 
@@ -25,10 +29,15 @@ function App() {
       console.log(error);
     }
   }
-  async function showInCel() {
-    console.log("asdasdasdas");
-    setCel(true);
-  }
+  const convert = () => {
+    if (unit === "C") {
+      setUnit(myUnit);
+    }
+
+    if (unit === "F") {
+      setUnit(myUnit);
+    }
+  };
   return (
     <div>
       {/* <div className="customNavbar">
@@ -56,11 +65,23 @@ function App() {
               Search
             </button>
 
-            <button class="button" onClick={() => setLocation(() => "")}>
-              Clear
+            <button
+              class="button"
+              onClick={() => {
+                setLocation(() => "");
+                setData(() => "");
+              }}
+            >
+              Reset
             </button>
+            {data.main ? (
+              <button class="button" onClick={convert}>
+                In °{myUnit}
+              </button>
+            ) : (
+              ""
+            )}
           </div>
-          {/* {result ? { result } : ""} */}
         </form>
 
         <div className="container">
@@ -70,7 +91,23 @@ function App() {
             </div>
             <div className="temp">
               {!data.main && location !== "" ? data.main : ""}
-              {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : ""}
+              {data.main && unit === "F" ? (
+                <h1>{data.main.temp.toFixed()}°F</h1>
+              ) : (
+                ""
+              )}
+              {data.main && unit === "C" ? (
+                <h1>
+                  {(
+                    (parseInt(data.main.temp.toFixed()) - 32) *
+                    (5 / 9)
+                  ).toFixed()}
+                  °C
+                </h1>
+              ) : (
+                ""
+                // <h1>{data.main.temp.toFixed()}°F</h1>
+              )}
 
               {data.weather ? (
                 <p style={{ fontSize: "3em" }}>{data.weather[0].main}</p>
@@ -95,15 +132,12 @@ function App() {
               >
                 {data.main ? (
                   <>
-                    <button onClick={() => showInCel(() => "")}>
-                      View in Celcius
-                    </button>
-                    {cel ? (
+                    {unit === "C" ? (
                       <p className="bold">
                         {(
-                          (parseInt(data.main.temp.toFixed()) - 32) *
+                          (parseInt(data.main.feels_like.toFixed()) - 32) *
                           (5 / 9)
-                        ).toFixed(2)}
+                        ).toFixed()}
                         °C
                       </p>
                     ) : (
