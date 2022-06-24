@@ -27,13 +27,13 @@ app.post("/city", cors(), async (req, res) => {
 
   var request = require("request");
   request(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city["location"]}&appid=ac7162a5301f68933e690486b0461860`,
+    `https://api.openweathermap.org/data/2.5/weather?q=${city["location"]}&units=imperial&appid=ac7162a5301f68933e690486b0461860`,
     function (error, response, body) {
       let data = JSON.parse(body);
-      console.log(data.weather[0].description);
       if (response.statusCode === 200) {
         res.send(
-          `The weather in your city "${city["location"]}" is ${data.weather[0].description}`
+          data
+          //   `The weather in your city "${city["location"]}" is ${data.weather[0].description}`
         );
       }
     }
